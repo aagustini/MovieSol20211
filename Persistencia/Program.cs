@@ -32,6 +32,7 @@ namespace Persistencia
             {
                 Console.WriteLine("\t{0:20} - {1}", elem.Character, elem.Name);
             }
+            Console.WriteLine("- - - - - - - - - - -");
 
             var cast2 = _context.Characters
                                .Where(c => c.Actor.Name == "Pierce Brosnan")
@@ -91,7 +92,7 @@ namespace Persistencia
             }
 
             var cast6 = from e in cast5
-                        group e by e.Name into grp
+                        group e by e.Name into grp                       
                         select new
                         {
                             Genero = grp.Key,
@@ -103,6 +104,17 @@ namespace Persistencia
             {
                 Console.WriteLine("\t{0:-15} - {1}", elem.Genero, elem.Qtde);
             }
+
+            // data de nascimento do ator mais novo
+            var cast7 = (from a in _context.Actors
+                         select a.DateBirth).Max();
+
+            var cast7b = (from a in _context.Actors
+                             where a.DateBirth == cast7
+                             select a.Name).FirstOrDefault();
+
+            Console.WriteLine("\n Atorm mais novo: {0} DN: {1}", cast7b, cast7.ToShortDateString());
+
 
             #endregion
             #region # LINQ - consultas aula 31/03
