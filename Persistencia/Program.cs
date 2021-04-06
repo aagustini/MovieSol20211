@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata;
 
 namespace Persistencia
 {
@@ -14,137 +15,227 @@ namespace Persistencia
         static void Main(string[] args)
         {
             MovieContext _context = new MovieContext();
-            #region # LINQ - consultas
-            Console.WriteLine();
-           // Console.WriteLine("Todos os gêneros da base de dados:");
-           // foreach (Genre genero in _context.Genres)
-           // {
-           //     Console.WriteLine("{0} \t {1}", genero.GenreId, genero.Name);
-           // }
 
-            //listar todos os filmes de acao
-            Console.WriteLine();
-            Console.WriteLine("Todos os filmes do genero 'Action':");
-            var filmesAction = _context.Movies.Where(m => m.Genre.Name.Equals("Action"));
 
-            foreach (Movie filme in filmesAction)
+            #region # LINQ - consultas casting
+
+            // elenco de um filme qualquer
+            var cast1 = _context.Characters                     
+                               .Where(c => c.Movie.Title == "Skyfall")
+                               .Select(c => new
+                               {
+                                   c.Character,
+                                   c.Actor.Name
+                               });
+            Console.WriteLine("Elenco do filme Skyfall:");
+            foreach (var elem in cast1)
             {
-                Console.WriteLine("\t{0}", filme.Title);
+                Console.WriteLine("\t{0:20} - {1}", elem.Character, elem.Name);
             }
 
-            Console.WriteLine();
-            Console.WriteLine("Todos os filmes do genero 'Action':");
-            var filmesAction2 = from m in _context.Movies
-                                where m.GenreID == 1
-                                select m;
-            foreach (Movie filme in filmesAction2)
+            var cast2 = _context.Characters
+                               .Where(c => c.Actor.Name == "Pierce Brosnan")
+                               .Select(c => new
+                               {
+                                   c.Movie.Title,
+                                   c.Movie.Genre.Name
+                               });
+
+            Console.WriteLine("\nFilme do Pierce Brosnan com genero:");
+            foreach (var elem in cast2)
             {
-                Console.WriteLine("\t{0}", filme.Title);
+                Console.WriteLine("\t{0:-15} - {1}", elem.Title, elem.Name);
             }
 
-            Console.WriteLine();
-            Console.WriteLine("Todos os filmes de cada genero:");
-            var generosFilmes = from g in _context.Genres.Include(gen => gen.Movies)
-                                select g;
-            //var generosFilmes2 = db.Genres.Include(gen => gen.Movies).ToList();
-
-            foreach (var gf in generosFilmes)
-            {
-                Console.WriteLine("Filmes do genero: " + gf.Name);
-                foreach (var f in gf.Movies)
-                {
-                    Console.WriteLine("\t{0}", f.Title);
-                }
-            }
-
-            Console.WriteLine("Nomes dos filmes do diretor Quentin Tarantino:");
-            var q0 = from f in _context.Movies
-                     where f.Director == "Quentin Tarantino"
-                     select f.Title;
-
-            foreach(String titulo in q0)
-            {
-                Console.WriteLine("\t{0}", titulo);
-            }
+            var cast3 = (from c in _context.Characters
+                         where c.Actor.Name == "Pierce Brosnan"
+                         select c).Count();
 
 
-            
-            Console.WriteLine();
-            Console.WriteLine("Nomes dos filmes do diretor Quentin Tarantino:");
-            var q1 = from f in _context.Movies
-                     where f.Director == "Quentin Tarantino"
-                     select new
+            Console.WriteLine("\nPierce Brosnan autuou em " + cast3 + " filmes ");
+
+            var cast4 = from m in _context.Movies
+                        
+                        group m by m.Genre.Name into grp
+                       select new
                      {
-                         Ano = f.ReleaseDate.Year,
-                         Titulo =  f.Title
+                         Genero = grp.Key,
+                         AvaliacaoMedia = grp.Average(m => m.Rating)
                      };
 
-            var q2 = _context.Movies.Where(f => f.Director == "Quentin Tarantino").Select(f => f.Title);
 
-            foreach (var item in q1)
+            Console.WriteLine("\nAvaliacao media dos filmes por genero ");
+            foreach (var gen in cast4)
             {
-                Console.WriteLine("{0} - {1}", item.Ano, item.Titulo);
+                Console.WriteLine("Genero = {0} \t avalicao media = {1}",
+                    gen.Genero, gen.AvaliacaoMedia);
+              
             }
 
+            var cast5 = _context.Characters.Where(c => c.Actor.Name.Contains("Pierce"))
+                        .Include(c => c.Movie)
+                        .ThenInclude(g => g.Genre)
+                        .Select(c => new
+                        {
+                            c.Movie.Title,
+                            c.Movie.Genre.Name
 
-            Console.WriteLine();
-            Console.WriteLine("Nomes e data dos filmes do diretor Quentin Tarantino:");
-            var q3 = from f in _context.Movies
-                     where f.Director == "Quentin Tarantino"
-                     select new { f.Title, f.ReleaseDate };
-            foreach (var f in q3)
+                        }); ;
+           
+
+
+            Console.WriteLine("\nFilme do Pierce Brosnan com genero:");
+            foreach (var elem in cast5)
             {
-                Console.WriteLine("{0}\t {1}", f.ReleaseDate.ToShortDateString(), f.Title);
+                Console.WriteLine("\t{0:-15} - {1}", elem.Title, elem.Name);
             }
 
-            Console.ReadLine();
-            Console.WriteLine();
-            Console.WriteLine("Todos os gêneros ordenados pelo nome:");
-            var q4 = _context.Genres.OrderByDescending(g => g.Name);
-            foreach (var genero in q4)
+            var cast6 = from e in cast5
+                        group e by e.Name into grp
+                        select new
+                        {
+                            Genero = grp.Key,
+                            Qtde = grp.Count()
+                        };
+
+            Console.WriteLine("\nQtde Filmes do Pierce Brosnan por genero:");
+            foreach (var elem in cast6)
             {
-                Console.WriteLine("{0, 20}\t {1}", genero.Name, genero.Description.Substring(0, 30));
+                Console.WriteLine("\t{0:-15} - {1}", elem.Genero, elem.Qtde);
             }
-            Console.WriteLine();
-            Console.WriteLine("Numero de filmes agrupados pelo anos de lançamento:");
-            var q5 = from f in _context.Movies
-                     group f by f.ReleaseDate.Year into grupo
-                     select new
-                     {
-                         Chave = grupo.Key,
-                         NroFilmes = grupo.Count()
-                     };
 
-            foreach (var ano in q5.OrderByDescending(g => g.NroFilmes))
-            {
-                Console.WriteLine("Ano: {0}  Numero de filmes: {1}", 
-                                    ano.Chave,
-                                    ano.NroFilmes);
+            #endregion
+            #region # LINQ - consultas aula 31/03
+            // Console.WriteLine();
+            //// Console.WriteLine("Todos os gêneros da base de dados:");
+            //// foreach (Genre genero in _context.Genres)
+            //// {
+            ////     Console.WriteLine("{0} \t {1}", genero.GenreId, genero.Name);
+            //// }
 
-            }
-            //Console.WriteLine("tecle algo para continuar");
-            //Console.ReadKey();
+            // //listar todos os filmes de acao
+            // Console.WriteLine();
+            // Console.WriteLine("Todos os filmes do genero 'Action':");
+            // var filmesAction = _context.Movies.Where(m => m.Genre.Name.Equals("Action"));
 
-            Console.WriteLine();
-            Console.WriteLine("Projeção do faturamento total, quantidade de filmes e avaliação média agrupadas por gênero:");
-            var q6 = from f in _context.Movies
-                     group f by f.Genre.Name into grpGen
-                     select new
-                     {
-                         Categoria = grpGen.Key,
-                         Faturamento = grpGen.Sum(e => e.Gross),
-                         Avaliacao = grpGen.Average(e => e.Rating),
-                         Quantidade = grpGen.Count()
-                     };
+            // foreach (Movie filme in filmesAction)
+            // {
+            //     Console.WriteLine("\t{0}", filme.Title);
+            // }
 
-            foreach (var genero in q6)
-            {
-                Console.WriteLine("Genero: {0}", genero.Categoria);
-                Console.WriteLine("\tFaturamento total: {0}\n\t Avaliação média: {1}\n\tNumero de filmes: {2}",
-                                genero.Faturamento, genero.Avaliacao, genero.Quantidade);
-            }
-            Console.WriteLine("tecle algo para continuar");
-            Console.ReadKey();
+            // Console.WriteLine();
+            // Console.WriteLine("Todos os filmes do genero 'Action':");
+            // var filmesAction2 = from m in _context.Movies
+            //                     where m.GenreID == 1
+            //                     select m;
+            // foreach (Movie filme in filmesAction2)
+            // {
+            //     Console.WriteLine("\t{0}", filme.Title);
+            // }
+
+            // Console.WriteLine();
+            // Console.WriteLine("Todos os filmes de cada genero:");
+            // var generosFilmes = from g in _context.Genres.Include(gen => gen.Movies)
+            //                     select g;
+            // //var generosFilmes2 = db.Genres.Include(gen => gen.Movies).ToList();
+
+            // foreach (var gf in generosFilmes)
+            // {
+            //     Console.WriteLine("Filmes do genero: " + gf.Name);
+            //     foreach (var f in gf.Movies)
+            //     {
+            //         Console.WriteLine("\t{0}", f.Title);
+            //     }
+            // }
+
+            // Console.WriteLine("Nomes dos filmes do diretor Quentin Tarantino:");
+            // var q0 = from f in _context.Movies
+            //          where f.Director == "Quentin Tarantino"
+            //          select f.Title;
+
+            // foreach(String titulo in q0)
+            // {
+            //     Console.WriteLine("\t{0}", titulo);
+            // }
+
+
+
+            // Console.WriteLine();
+            // Console.WriteLine("Nomes dos filmes do diretor Quentin Tarantino:");
+            // var q1 = from f in _context.Movies
+            //          where f.Director == "Quentin Tarantino"
+            //          select new
+            //          {
+            //              Ano = f.ReleaseDate.Year,
+            //              Titulo =  f.Title
+            //          };
+
+            // var q2 = _context.Movies.Where(f => f.Director == "Quentin Tarantino").Select(f => f.Title);
+
+            // foreach (var item in q1)
+            // {
+            //     Console.WriteLine("{0} - {1}", item.Ano, item.Titulo);
+            // }
+
+
+            // Console.WriteLine();
+            // Console.WriteLine("Nomes e data dos filmes do diretor Quentin Tarantino:");
+            // var q3 = from f in _context.Movies
+            //          where f.Director == "Quentin Tarantino"
+            //          select new { f.Title, f.ReleaseDate };
+            // foreach (var f in q3)
+            // {
+            //     Console.WriteLine("{0}\t {1}", f.ReleaseDate.ToShortDateString(), f.Title);
+            // }
+
+            // //Console.ReadLine();
+            // Console.WriteLine();
+            // Console.WriteLine("Todos os gêneros ordenados pelo nome:");
+            // var q4 = _context.Genres.OrderByDescending(g => g.Name);
+            // foreach (var genero in q4)
+            // {
+            //     Console.WriteLine("{0, 20}\t {1}", genero.Name, genero.Description.Substring(0, 30));
+            // }
+            // Console.WriteLine();
+            // Console.WriteLine("Numero de filmes agrupados pelo anos de lançamento:");
+            // var q5 = from f in _context.Movies
+            //          group f by f.ReleaseDate.Year into grupo
+            //          select new
+            //          {
+            //              Chave = grupo.Key,
+            //              NroFilmes = grupo.Count()
+            //          };
+
+            // foreach (var ano in q5.OrderByDescending(g => g.NroFilmes))
+            // {
+            //     Console.WriteLine("Ano: {0}  Numero de filmes: {1}", 
+            //                         ano.Chave,
+            //                         ano.NroFilmes);
+
+            // }
+            // //Console.WriteLine("tecle algo para continuar");
+            // //Console.ReadKey();
+
+            // Console.WriteLine();
+            // Console.WriteLine("Projeção do faturamento total, quantidade de filmes e avaliação média agrupadas por gênero:");
+            // var q6 = from f in _context.Movies
+            //          group f by f.Genre.Name into grpGen
+            //          select new
+            //          {
+            //              Categoria = grpGen.Key,
+            //              Faturamento = grpGen.Sum(e => e.Gross),
+            //              Avaliacao = grpGen.Average(e => e.Rating),
+            //              Quantidade = grpGen.Count()
+            //          };
+
+            // foreach (var genero in q6)
+            // {
+            //     Console.WriteLine("Genero: {0}", genero.Categoria);
+            //     Console.WriteLine("\tFaturamento total: {0}\n\t Avaliação média: {1}\n\tNumero de filmes: {2}",
+            //                     genero.Faturamento, genero.Avaliacao, genero.Quantidade);
+            // }
+            // Console.WriteLine("tecle algo para continuar");
+            // Console.ReadKey();
             #endregion
 
 
