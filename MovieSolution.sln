@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistencia", "Persistencia\Persistencia.csproj", "{1A587145-C167-4FED-A926-C9B54108CC4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistencia", "Persistencia\Persistencia.csproj", "{1A587145-C167-4FED-A926-C9B54108CC4D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieWeb", "MovieWeb\MovieWeb.csproj", "{0AA58C8A-2FEA-4D35-A1C8-1D3B4305E266}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Negocio", "Negocio\Negocio.csproj", "{625F3BCF-2FAE-4945-9B86-40D9A79C5838}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{1A587145-C167-4FED-A926-C9B54108CC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A587145-C167-4FED-A926-C9B54108CC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A587145-C167-4FED-A926-C9B54108CC4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AA58C8A-2FEA-4D35-A1C8-1D3B4305E266}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AA58C8A-2FEA-4D35-A1C8-1D3B4305E266}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AA58C8A-2FEA-4D35-A1C8-1D3B4305E266}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AA58C8A-2FEA-4D35-A1C8-1D3B4305E266}.Release|Any CPU.Build.0 = Release|Any CPU
+		{625F3BCF-2FAE-4945-9B86-40D9A79C5838}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{625F3BCF-2FAE-4945-9B86-40D9A79C5838}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{625F3BCF-2FAE-4945-9B86-40D9A79C5838}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{625F3BCF-2FAE-4945-9B86-40D9A79C5838}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
