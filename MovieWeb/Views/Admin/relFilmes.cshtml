@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Persistencia.ViewModels.RelFilmes>
+
+@{
+    ViewData["Title"] = "relFilmes";
+}
+
+<h1>relFilmes</h1>
+
+<p>
+
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Faturamento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Avaliacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantidade)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Faturamento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Avaliacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+
+        </tr>
+}
+    </tbody>
+</table>
