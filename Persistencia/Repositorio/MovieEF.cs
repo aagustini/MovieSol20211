@@ -6,6 +6,7 @@ using System.Text;
 using System.Linq;
 using Entidades.ViewModels;
 using Entidades.Interfaces;
+using Entidades.Model;
 
 namespace Persistencia.Repositorio
 {
@@ -16,6 +17,11 @@ namespace Persistencia.Repositorio
         public MovieEF()
         {
             _context = new MovieContext();
+        }
+
+        public List<Movie> todos()
+        {
+            return _context.Movies.Include("Genre").ToList();
         }
 
         public List<RelFilmes> consolidadoFilmes()

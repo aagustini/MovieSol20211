@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entidades.Model;
+using Entidades.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,8 @@ using Negocio;
 
 namespace FilmesWeb.Controllers
 {
+
+    [Authorize]
     public class FilmesController : Controller
     {
         public readonly AdmFacade _negocio;
@@ -27,28 +31,37 @@ namespace FilmesWeb.Controllers
             _environment = environment;
         }
 
-        public IActionResult Index()
+        [AllowAnonymous]
+        public async Task<IActionResult> Index()
         {
+            List<Movie> filmes = _negocio.TodosFilmes();
+            return View(filmes);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> roteiroAutenticacao()
+        { 
             return View();
         }
 
-        public IActionResult roteiroAutenticacao()
+
+        public IActionResult relFilmes()
         {
-            return View();
+            List<RelFilmes> consolidado = _negocio.relatorioFilmes();
+
+            return View(consolidado);
+
         }
 
-
-
-
-        private async Task<IActionResult> usuario()
+        public async Task<IActionResult> dadosUsuario()
         {
             var usuario = await _userManager.GetUserAsync(User);
 
             ViewBag.Id = usuario.Id;
-            ViewBag.Endereco = usuario.Endereco;
-            
-            return View();
+            ViewBag.UserName = usuario.UserName;
 
+            return View();
+            
         }
     }
 }

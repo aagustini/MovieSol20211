@@ -1,4 +1,5 @@
 ﻿using Entidades.Interfaces;
+using Entidades.Model;
 using Entidades.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace Negocio
 {
     public class AdmFacade
     {
-        private readonly IMovieDAO _dao;
+        private readonly IMovieDAO _daoFilmes;
 
         //public AdmFacade()
         //{
@@ -17,12 +18,16 @@ namespace Negocio
 
         public AdmFacade(IMovieDAO _movieDAO)
         {
-            _dao = _movieDAO;
+            _daoFilmes = _movieDAO;
         }
 
+        public List<Movie> TodosFilmes()
+        {
+            return _daoFilmes.todos();
+        }
         public List<RelFilmes> relatorioFilmes()
         {
-            return _dao.consolidadoFilmes();
+            return _daoFilmes.consolidadoFilmes();
         }
        
     }
