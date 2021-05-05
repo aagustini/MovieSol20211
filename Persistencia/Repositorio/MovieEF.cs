@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Persistencia.Interfaces;
-using Persistencia.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 using System.Linq;
-
-
+using Entidades.ViewModels;
+using Entidades.Interfaces;
 
 namespace Persistencia.Repositorio
 {

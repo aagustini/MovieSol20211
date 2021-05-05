@@ -1,13 +1,12 @@
-﻿
-using Persistencia.Entidades;
-using Persistencia.Repositorio;
-using System.Linq;
+﻿using System.Linq;
 
 using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata;
 using System.Threading;
+using Persistencia.Repositorio;
+using Entidades.Model;
 
 namespace Persistencia
 {

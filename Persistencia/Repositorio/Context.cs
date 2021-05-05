@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Persistencia.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Entidades.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+
 
 namespace Persistencia.Repositorio
 {
-    public class MovieContext : DbContext
+    // contexto vai gerenciar o Identity
+    //public class MovieContext : DbContext
+    public class MovieContext : IdentityDbContext<ApplicationUser>
     {
         public MovieContext() : base()
         {
@@ -19,18 +21,33 @@ namespace Persistencia.Repositorio
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Genre> Genres { get; set; }
-        
+
         public DbSet<Actor> Actors { get; set; }
         public DbSet<ActorMovie> Characters { get; set; }
+
+        // bd de autenticacao
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder
-.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=Filmes;Trusted_Connection=True;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder
+                  .UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=Filmes;Trusted_Connection=True");
+                base.OnConfiguring(optionsBuilder);
+            }
+        }
+
+
+        // associar a PK do Identity
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ApplicationUser>().ToTable("AspNetUsers").HasKey(t => t.Id);
+
+            base.OnModelCreating(builder);
         }
     }
-
 }
 
 

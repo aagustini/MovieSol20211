@@ -1,6 +1,5 @@
-﻿using Persistencia.Interfaces;
-using Persistencia.Repositorio;
-using Persistencia.ViewModels;
+﻿using Entidades.Interfaces;
+using Entidades.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
