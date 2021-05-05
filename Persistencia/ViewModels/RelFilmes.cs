@@ -11,4 +11,5 @@ namespace Persistencia.ViewModels
         public double  Avaliacao { get; set; }
         public int Quantidade { get; set; }
     }
+
 }
