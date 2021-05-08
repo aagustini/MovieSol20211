@@ -32,14 +32,14 @@ namespace FilmesWeb.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             List<Movie> filmes = _negocio.TodosFilmes();
             return View(filmes);
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> roteiroAutenticacao()
+        public IActionResult roteiroAutenticacao()
         { 
             return View();
         }
