@@ -37,7 +37,7 @@ namespace Negocio
 
         public void addReview(Review rev)
         {
-            // para ganhar tempo, n~ao deveria estar no daoFilmes
+            // para ganhar tempo, nao deveria estar no daoFilmes
              _daoFilmes.addReview(rev);
         }
     }

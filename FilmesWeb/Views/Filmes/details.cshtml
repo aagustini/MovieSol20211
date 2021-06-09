@@ -1,87 +1,100 @@
 ﻿@model Entidades.Model.Movie
 
-@{
-    ViewData["Title"] = "details";
-}
+@using Microsoft.AspNetCore.Identity
 
-<h1>details</h1>
+@inject SignInManager<Entidades.Model.ApplicationUser> SignInManager
+@inject UserManager<Entidades.Model.ApplicationUser> UserManager
 
-<div>
-    <h4>Movie</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.MovieId)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.MovieId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Director)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Director)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ReleaseDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReleaseDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Gross)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Gross)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.GenreID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.GenreID)
-        </dd>
-    </dl>
-</div>
 
-<div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    <a asp-action="Index">Back to List</a>
-</div>
 
-<h3>Reviews</h3>
-@foreach (Entidades.Model.Review rev in Model.Reviews)
-{
-    <dl class="row">
-        <dt class="col-sm-2">
-            @rev.User
-        </dt>
-        <dt class="col-sm-2">
-            @rev.Coment
-        </dt>
-    </dl>
+    @{
+        ViewData["Title"] = "details";
+    }
 
-}
-<form asp-controller="Filmes" asp-action="AddReview">
+    <h1>details</h1>
+
+    <div>
+        <h4>Movie</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.MovieId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.MovieId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Title)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Director)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Director)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ReleaseDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ReleaseDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Gross)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Gross)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Rating)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Rating)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.GenreID)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.GenreID)
+            </dd>
+        </dl>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
     <p>
 
-        <input type="hidden" name="MovieId" value="@Model.MovieId" />
-
-        Mensagem: <input type="text" name="revString" />
-
-        <input type="submit" value="Enviar" />
     </p>
-</form>
+    <h3>Reviews</h3>
+    @foreach (Entidades.Model.Review rev in Model.Reviews)
+    {
+        <dl class="row">
+            <dt class="col-sm-2">
+                @rev.User
+            </dt>
+            <dt class="col-sm-2">
+                @rev.Coment
+            </dt>
+        </dl>
+
+    }
+
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <form asp-controller="Filmes" asp-action="AddReview">
+            <p>
+
+                <input type="hidden" name="MovieId" value="@Model.MovieId" />
+
+                Mensagem: <input type="text" name="revString" />
+
+                <input type="submit" value="Enviar" />
+            </p>
+        </form>
+    }
 
 

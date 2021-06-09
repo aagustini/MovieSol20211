@@ -45,11 +45,13 @@ namespace FilmesWeb.Controllers
         }
 
         
-        public IActionResult details(int id)
+        [AllowAnonymous]
+        public IActionResult Details(int id)
         {
             Movie movie = _negocio.getMovie(id);
             if (movie == null)
-                return NotFound();
+                return    RedirectToAction("Index", "Filmes");
+
             else
                 return View(movie);
 
