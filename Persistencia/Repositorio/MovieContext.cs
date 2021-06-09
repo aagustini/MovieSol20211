@@ -25,8 +25,11 @@ namespace Persistencia.Repositorio
         public DbSet<Actor> Actors { get; set; }
         public DbSet<ActorMovie> Characters { get; set; }
 
+        public DbSet<Review> Reviews { get; set; }
+
         // bd de autenticacao
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

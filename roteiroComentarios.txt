@@ -1,0 +1,6 @@
+1. criar uma classe de modelo e adicionar no contexto
+2. atualizar as propriedades de navegacao na classe movie
+3. adicionar uma migracao e gerar o banco
+4. adicinar codigo para mostar os comentarios e bot~ao para enviar um novo review
+5. no controlador persistir objeto comentario para o usu'ario logado
+6. adicionar m'etodo para persistir o review no controlaror/negocio/persitencia

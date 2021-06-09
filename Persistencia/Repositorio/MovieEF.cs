@@ -40,7 +40,16 @@ namespace Persistencia.Repositorio
 
         }
 
-     
+     public Movie getMovie(int id)
+        {
+            return _context.Movies.Include("Reviews").Where(m=>m.MovieId == id).FirstOrDefault();
 
+        }
+
+        public void addReview(Review rev)
+        {
+            _context.Reviews.Add(rev);
+            _context.SaveChanges();
+        }
     }
 }

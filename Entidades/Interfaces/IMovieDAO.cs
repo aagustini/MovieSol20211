@@ -12,5 +12,7 @@ namespace Entidades.Interfaces
          List<Movie> todos();
          List<RelFilmes> consolidadoFilmes();
 
+        Movie getMovie(int id);
+        void addReview(Review rev);
     }
 }

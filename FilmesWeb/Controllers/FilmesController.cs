@@ -44,6 +44,39 @@ namespace FilmesWeb.Controllers
             return View();
         }
 
+        
+        public IActionResult details(int id)
+        {
+            Movie movie = _negocio.getMovie(id);
+            if (movie == null)
+                return NotFound();
+            else
+                return View(movie);
+
+        }
+
+        public async Task<IActionResult> AddReview(int MovieId, string revString)
+        {
+            var usuario = await _userManager.GetUserAsync(User);
+
+            ViewBag.Id = usuario.Id;
+            ViewBag.UserName = usuario.UserName;
+
+            Review novo = new Review()
+            {
+                Coment = revString,
+                User = usuario.UserName,
+                MovieId = MovieId
+            };
+
+            _negocio.addReview(novo);
+
+            //return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Filmes", new { Id=MovieId });
+
+        }
+
+
 
         public IActionResult relFilmes()
         {

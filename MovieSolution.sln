@@ -11,6 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilmesWeb", "FilmesWeb\Film
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades", "Entidades\Entidades.csproj", "{739ED3D4-1625-4CAE-8D4B-8C4A99505671}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{F6EE29B6-6C5E-4839-A3CB-973377EE2DC0}"
+	ProjectSection(SolutionItems) = preProject
+		roteiroComentarios.txt = roteiroComentarios.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

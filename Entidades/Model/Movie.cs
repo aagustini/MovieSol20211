@@ -23,6 +23,9 @@ namespace Entidades.Model
         public virtual Genre Genre { get; set; }
 
         public virtual ICollection<ActorMovie> Characters { get; set; }
+
+
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 
 }

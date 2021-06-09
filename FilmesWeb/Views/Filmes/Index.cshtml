@@ -64,13 +64,11 @@
                 @Html.DisplayFor(modelItem => item.Rating)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GenreID)
+                @Html.DisplayFor(modelItem => item.Genre.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
+            <a asp-action="Details" asp-route-id="@item.MovieId">Details</a>
+                </td>
         </tr>
 }
     </tbody>

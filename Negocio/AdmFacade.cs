@@ -29,6 +29,16 @@ namespace Negocio
         {
             return _daoFilmes.consolidadoFilmes();
         }
-       
+
+        public Movie getMovie(int id)
+        {
+            return _daoFilmes.getMovie(id);
+        }
+
+        public void addReview(Review rev)
+        {
+            // para ganhar tempo, n~ao deveria estar no daoFilmes
+             _daoFilmes.addReview(rev);
+        }
     }
 }
