@@ -38,7 +38,7 @@ namespace FilmesWeb
            //     options.UseSqlServer(
            //         Configuration.GetConnectionString("DefaultConnection")));
            
-                        services.AddDbContext<MovieContext>(options =>
+            services.AddDbContext<MovieContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("MovieContext")));
 

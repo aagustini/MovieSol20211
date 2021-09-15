@@ -40,7 +40,7 @@ namespace Persistencia.Repositorio
 
         }
 
-     public Movie getMovie(int id)
+        public Movie getMovie(int id)
         {
             return _context.Movies.Include("Reviews").Where(m=>m.MovieId == id).FirstOrDefault();
 
